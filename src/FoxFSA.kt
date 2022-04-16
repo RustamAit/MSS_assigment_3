@@ -45,6 +45,7 @@ class FoxFSA {
     }
 
     private fun listenChaseState(){
+        foxStateListener?.unsubscribe()
         foxStateListener = null
         foxStateListener = BasicSubscriber{
             when(it){
@@ -57,6 +58,7 @@ class FoxFSA {
     }
 
     private fun listenRunState(){
+        foxStateListener?.unsubscribe()
         foxStateListener = null
         foxStateListener = BasicSubscriber{
             when(it){
@@ -70,12 +72,16 @@ class FoxFSA {
     }
 
     private fun listenEatsState(){
+        foxStateListener?.unsubscribe()
         foxStateListener = null
-        foxStateListener = BasicSubscriber {}
+        foxStateListener = BasicSubscriber {
+            println(it)
+        }
         foxStateEvent.subscribe(foxStateListener)
     }
 
     private fun listenSuffersState(){
+        foxStateListener?.unsubscribe()
         foxStateListener = null
         foxStateListener = BasicSubscriber {
             when(it){

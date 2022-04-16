@@ -20,4 +20,8 @@ class BasicSubscriber<T>(private val onNext: (input: T) -> Unit): Flow.Subscribe
         throw throwable ?: IllegalStateException()
     }
     override fun onComplete() {}
+
+    fun unsubscribe(){
+        subscription?.cancel()
+    }
 }

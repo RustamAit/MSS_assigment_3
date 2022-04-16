@@ -26,7 +26,7 @@ class Game(private val map: Map){
     }
 
     fun updateCurrentPlayerMove(move: String){
-        currentPlayerMove = enumValueOf(move)
+        currentPlayerMove = enumValueOf(move.trim().uppercase())
     }
 
     private fun movePlayer(){
