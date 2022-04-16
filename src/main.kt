@@ -1,4 +1,3 @@
-import kotlin.collections.Map
 
 const val VALID_INPUTS = "wasd"
 
@@ -15,7 +14,7 @@ fun play(){
         }
         val text = readLine()
         if(text == "new"){
-            game = Game(kotlin.collections.Map(12, 12))
+            game = Game(Map(12, 12))
             game.run()
         }
         if(VALID_INPUTS.contains(text ?: "")){
