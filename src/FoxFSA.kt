@@ -1,5 +1,3 @@
-import java.lang.IllegalStateException
-import java.util.concurrent.Flow
 import java.util.concurrent.SubmissionPublisher
 import kotlin.concurrent.thread
 
@@ -11,23 +9,22 @@ class FoxFSA {
     }
     private val foxStateEvent = SubmissionPublisher<String>()
     private val foxStateObserver = SubmissionPublisher<FoxState>()
-    var stopped: Boolean = false
 
     init {
         thread {
             foxStateObserver.subscribe(BasicSubscriber<FoxState>{
                 when(it){
                     FoxState.CHASING -> {
-                        listenChases()
+                        listenChaseState()
                     }
                     FoxState.RUNNING -> {
-                        listenRuns()
+                        listenRunState()
                     }
                     FoxState.EATS -> {
-                        listenEats()
+                        listenEatsState()
                     }
                     FoxState.SUFFERS -> {
-                        listenSuffers()
+                        listenSuffersState()
                     }
                 }
             })
@@ -46,7 +43,7 @@ class FoxFSA {
         foxStateEvent.submit(event)
     }
 
-    private fun listenChases(){
+    private fun listenChaseState(){
         foxStateEvent.subscribe(BasicSubscriber{
             when(it){
                 "p" -> foxState = FoxState.RUNNING
@@ -56,7 +53,7 @@ class FoxFSA {
         })
     }
 
-    private fun listenRuns(){
+    private fun listenRunState(){
         foxStateEvent.subscribe(BasicSubscriber{
             when(it){
                 "p" -> foxState = FoxState.RUNNING
@@ -67,13 +64,12 @@ class FoxFSA {
         })
     }
 
-    private fun listenEats(){
+    private fun listenEatsState(){
         foxStateEvent.subscribe(BasicSubscriber{
-            println(it)
         })
     }
 
-    private fun listenSuffers(){
+    private fun listenSuffersState(){
         foxStateEvent.subscribe(BasicSubscriber{
             when(it){
                 "n" -> foxState = FoxState.CHASING

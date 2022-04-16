@@ -1,5 +1,5 @@
 class Point(var x: Int, var y: Int) {
-    fun shift(xIncr: Int, yIncr: Int, xMax: Int, yMax: Int){
+    fun shift(xIncr: Int, yIncr: Int){
         x += xIncr
         y += yIncr
     }

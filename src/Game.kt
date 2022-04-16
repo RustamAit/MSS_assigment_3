@@ -1,19 +1,13 @@
-import java.util.*
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
-const val W = "w"
-const val S = "s"
-const val A = "a"
-const val D = "d"
 
-class Game(val map: Map){
-    var currentPlayerMove: String = ""
-    var stopped: Boolean = false
+class Game(private val map: Map){
+    private var currentPlayerMove: ActionType = ActionType.NONE
     private val foxFSA = FoxFSA()
     private val modeFSA = ModeFSA()
+
+    var stopped: Boolean = false
 
     fun run(){
         logCurrentState()
@@ -32,18 +26,18 @@ class Game(val map: Map){
     }
 
     fun updateCurrentPlayerMove(move: String){
-        currentPlayerMove = move
+        currentPlayerMove = enumValueOf(move)
     }
 
     private fun movePlayer(){
         when(currentPlayerMove){
-            D -> map.shiftPlayer(1,0)
-            A -> map.shiftPlayer(-1, 0)
-            W -> map.shiftPlayer(0,-1)
-            S -> map.shiftPlayer(0,1)
-            else -> {}
+            ActionType.D -> map.shiftPlayer(1,0)
+            ActionType.A -> map.shiftPlayer(-1, 0)
+            ActionType.W -> map.shiftPlayer(0,-1)
+            ActionType.S -> map.shiftPlayer(0,1)
+            ActionType.NONE -> {}
         }
-        currentPlayerMove = ""
+        currentPlayerMove = ActionType.NONE
     }
 
     private fun moveFox(){
@@ -84,4 +78,12 @@ class Game(val map: Map){
         println("-------")
         println("Next move ->")
     }
+}
+
+enum class ActionType(val value: String){
+    W("w"),
+    S("s"),
+    A("a"),
+    D("d"),
+    NONE("")
 }

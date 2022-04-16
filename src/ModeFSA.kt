@@ -1,11 +1,10 @@
-import java.sql.Time
 import java.util.*
 import java.util.concurrent.SubmissionPublisher
 import kotlin.concurrent.thread
 
 class ModeFSA {
     private var modeStateEvent = SubmissionPublisher<String>()
-    private var normalModeTimer: Timer? = null
+    private var powerModeTimer: Timer? = null
     var currentMode = GameMode.NORMAL
 
     init {
@@ -21,17 +20,21 @@ class ModeFSA {
     private fun listenEvents(){
         modeStateEvent.subscribe(BasicSubscriber{
             if(it == "p"){
-                normalModeTimer?.cancel()
-                normalModeTimer = null
-                currentMode = GameMode.POWERED
-                normalModeTimer = Timer()
-                normalModeTimer?.schedule(object: TimerTask(){
-                    override fun run() {
-                        currentMode = GameMode.NORMAL
-                    }
-                }, 5000)
+                startPowerMode(5000)
             }
         })
+    }
+
+    private fun startPowerMode(duration: Long){
+        powerModeTimer?.cancel()
+        powerModeTimer = null
+        currentMode = GameMode.POWERED
+        powerModeTimer = Timer()
+        powerModeTimer?.schedule(object: TimerTask(){
+            override fun run() {
+                currentMode = GameMode.NORMAL
+            }
+        }, duration)
     }
 }
 
