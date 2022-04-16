@@ -17,11 +17,11 @@ fun play(){
             game = Game(Map(12, 12))
             game.run()
         }
-        if(VALID_INPUTS.contains(text ?: "")){
+        if(!text.isNullOrEmpty() && VALID_INPUTS.contains(text)){
             if(game == null){
                 println("Please type 'new' to start game")
             } else {
-                game.updateCurrentPlayerMove(text ?: "w")
+                game.updateCurrentPlayerMove(text)
             }
         }
     }

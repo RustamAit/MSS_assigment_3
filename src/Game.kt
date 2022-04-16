@@ -68,6 +68,9 @@ class Game(private val map: Map){
 
     private fun updateGame(){
         stopped = !map.hasMushrooms() || foxFSA.getState() == "Fox won"
+        if(stopped){
+            println("GAME END")
+        }
     }
 
     private fun logCurrentState(){

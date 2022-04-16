@@ -9,6 +9,7 @@ class FoxFSA {
     }
     private val foxStateEvent = SubmissionPublisher<String>()
     private val foxStateObserver = SubmissionPublisher<FoxState>()
+    private var foxStateListener: BasicSubscriber<String>? = null
 
     init {
         thread {
@@ -44,37 +45,44 @@ class FoxFSA {
     }
 
     private fun listenChaseState(){
-        foxStateEvent.subscribe(BasicSubscriber{
+        foxStateListener = null
+        foxStateListener = BasicSubscriber{
             when(it){
                 "p" -> foxState = FoxState.RUNNING
                 "m" -> foxState = FoxState.EATS
                 "" -> foxState = FoxState.CHASING
             }
-        })
+        }
+        foxStateEvent.subscribe(foxStateListener)
     }
 
     private fun listenRunState(){
-        foxStateEvent.subscribe(BasicSubscriber{
+        foxStateListener = null
+        foxStateListener = BasicSubscriber{
             when(it){
                 "p" -> foxState = FoxState.RUNNING
                 "m" -> foxState = FoxState.SUFFERS
                 "n" -> foxState = FoxState.CHASING
                 "" -> foxState = FoxState.RUNNING
             }
-        })
+        }
+        foxStateEvent.subscribe(foxStateListener)
     }
 
     private fun listenEatsState(){
-        foxStateEvent.subscribe(BasicSubscriber{
-        })
+        foxStateListener = null
+        foxStateListener = BasicSubscriber {}
+        foxStateEvent.subscribe(foxStateListener)
     }
 
     private fun listenSuffersState(){
-        foxStateEvent.subscribe(BasicSubscriber{
+        foxStateListener = null
+        foxStateListener = BasicSubscriber {
             when(it){
                 "n" -> foxState = FoxState.CHASING
             }
-        })
+        }
+        foxStateEvent.subscribe(foxStateListener)
     }
 }
 
